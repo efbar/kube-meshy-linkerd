@@ -1,0 +1,9 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: echo
+spec:
+  selector:
+    app: echo
+  ports:
+  - port: 8080

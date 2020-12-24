@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo
+  labels:
+    app: echo
+spec:
+  selector:
+    matchLabels:
+      app: echo
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: echo
+    spec:
+      containers:
+        - name: echo-server
+          #image: docker.io/library/echo-server:v1
+          image: localhost:5000/echo-server:v1
+          ports:
+            - containerPort: 80
+      securityContext:
+        runAsNonRoot: false
+
