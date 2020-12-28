@@ -1,9 +1,9 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: echo
+  name: minimal-service
 spec:
   selector:
-    app: echo
+    app: minimal-service
   ports:
-  - port: 8080
+  - port: 9090
