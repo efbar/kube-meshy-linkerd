@@ -1,0 +1,9 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: bounced-service
+spec:
+  selector:
+    app: bounced-service
+  ports:
+  - port: 9090
