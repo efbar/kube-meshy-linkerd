@@ -1,0 +1,16 @@
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  name: ingress-nginx-controller.ingress-nginx.svc.cluster.local
+  namespace: ingress-nginx
+spec:
+  routes:
+  - condition:
+      method: GET
+      pathRegex: /
+    name: GET /
+    isRetryable: true
+  # retryBudget:
+  #   retryRatio: 0.2
+  #   minRetriesPerSecond: 10
+  #   ttl: 10s
