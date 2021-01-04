@@ -148,7 +148,14 @@ $ kustomize build test-services/overlays/minimal-service/
 ```
 
 The output is composed by one deployment, one service and one ingress.
-For the sake of tests, push `minimal-service` image in local registry as showed before (the image Dockerfile is located in the table at the beginning of the docs).
+For the sake of tests, push `minimal-service` image in local registry as showed before (the image Dockerfile is located in the table at the beginning of the docs), for example:
+
+```bash
+$ curl -s -o Dockerfile https://raw.githubusercontent.com/efbar/minimal-service/main/Dockerfile
+$ docker build . -t minimal-service:v1.0.0
+$ docker tag minimal-service:v1.0.0 localhost:5000/minimal-service:v1.0.0
+$ docker push localhost:5000/minimal-service:v1.0.0
+```
 
 Then we can really deploying them *applying* the output of the last command:
 
