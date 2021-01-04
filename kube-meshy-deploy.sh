@@ -2,7 +2,7 @@
 
 set -e 
 
-REGISTRY_NAME="private-registry1"
+REGISTRY_NAME="private-registry"
 REGISTRY_EXT_PORT="5000"
 KIND_CLUSTER_NAME="kube-1.19.1"
 
@@ -42,51 +42,9 @@ while [ "$(kubectl -n ingress-nginx get pod ${POD} -o jsonpath='{.status.contain
     sleep 5
 done
 
-echo -e '\e[0;32m
+echo -e '\033[32m
 
-Now you can deploy everything you want!
-Before that, use that private registry:
+Done! Now you can deploy everything you want.
+Have a look to README file..
 
- $ docker tag [YOUR-IMAGE]:[TAG] localhost:${REGISTRY_EXT_PORT}/[YOUR-IMAGE]:[TAG]
-
- $ docker push localhost:5000/[YOUR-IMAGE]:[TAG]
-
-For Linkerd deploy, install it.
-
-On MacOS, with Homebrew:
- 
- $ brew install linkerd
-
-or, if you had installed before, upgrade it:
- 
- $ brew upgrade linkerd
-
-You can install it through command line on both Linux or MacOS:
-
- $ curl -sL https://run.linkerd.io/install | sh && export PATH=$PATH:$HOME/.linkerd2/bin
-
-Then do a preflight check:
-
- $ linkerd check --pre
-
-If everything is ok, then deploy linkerd into the cluster through its cli:
-
- $ linkerd install | kubectl apply -f -
-
-Watch the deployment progress:
-
- $ watch -n1 kubectl -n linkerd get deploy
-
-To get to the dashboard:
-
- $ linkerd dashboard &
-
-If you have something to deploy and you want to inject it with linkerd sidecars:
-
- $ linkerd inject k8s.yml | kubectl apply -f -
-
-otherwise, you can inject any running deployment with:
-
- $ kubectl get deploy -o yaml | linkerd inject - | kubectl apply -f -
-
-\e[0m'
+\033[0m'
