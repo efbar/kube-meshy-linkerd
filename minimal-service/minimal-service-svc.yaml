@@ -1,9 +1,0 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: minimal-service
-spec:
-  selector:
-    app: minimal-service
-  ports:
-  - port: 9090
