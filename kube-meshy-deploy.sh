@@ -6,9 +6,12 @@ REGISTRY_NAME="private-registry"
 REGISTRY_EXT_PORT="5000"
 KIND_CLUSTER_NAME="kube-1.19.1"
 
+if [ `docker ps -f ancestor=registry:2 -q | wc -l | tr -d ' '` -eq 0 ]; 
+then 
 echo "Deploy Private Docker Registry"
 
 docker run -d --restart=always -p "${REGISTRY_EXT_PORT}:5000" --name "${REGISTRY_NAME}" registry:2
+fi
 
 echo
 echo "Start KinD cluster"
