@@ -363,4 +363,69 @@ GET /       bounced-service    27.19%   3.6rps           1ms           1ms      
 [DEFAULT]   bounced-service         -        -             -             -             -
 ```
 
+#### Use mesh feature: TRAFFIC SPLIT
+
+There are some occasions where during the development of an application there is the necessity of testing and trying new features of the service.
+In those cases we would like to assure that the eventually new code has been tested not only in test environment but also under the pressure of a real scenario.
+
+With rollout strategies like ones in Canary or Blue/Green deployment we can decide where to split traffic to and how to do it.
+
+Since our `minimal-service` deployment is there on the platform, we decide now to deploy another version of the same application, `minimal-service-v2`.
+
+`kustomize build test-services/overlays/minimal-service-v2 | kubectl apply -f -`
+
+This version is labelled with `app: minimal-service`, as `minimal-version`, but differ on the `version` label. Now is `version: v2`.
+
+Next we can deploy a new kubernetes object, base on `Service Mesh Interface` apis, the `TrafficSplit` object:
+
+```yaml
+apiVersion: split.smi-spec.io/v1alpha1
+kind: TrafficSplit
+metadata:
+  name: splithalf
+spec:
+  service: minimal-service
+  backends:
+  - service: minimal-service
+    weight: 50
+  - service: minimal-service-v2
+    weight: 50
+```
+
+This resource split traffic at 50% to those different services. We can check this functionality with:
+
+```bash
+for i in {1..20}; do curl -s -H "Content-type:application/json" -H "Host: minimal-service" http://localhost |jq .servedBy && sleep 1s; done
+
+"minimal-service-7f97bbc567-f7sjp"
+"minimal-service-v2-7ccddd94d4-kr7bj"
+"minimal-service-v2-7ccddd94d4-kr7bj"
+"minimal-service-v2-7ccddd94d4-kr7bj"
+"minimal-service-v2-7ccddd94d4-kr7bj"
+"minimal-service-v2-7ccddd94d4-kr7bj"
+"minimal-service-v2-7ccddd94d4-kr7bj"
+"minimal-service-7f97bbc567-f7sjp"
+"minimal-service-7f97bbc567-f7sjp"
+"minimal-service-7f97bbc567-f7sjp"
+"minimal-service-v2-7ccddd94d4-kr7bj"
+"minimal-service-7f97bbc567-f7sjp"
+"minimal-service-7f97bbc567-f7sjp"
+"minimal-service-7f97bbc567-f7sjp"
+"minimal-service-v2-7ccddd94d4-kr7bj"
+"minimal-service-7f97bbc567-f7sjp"
+"minimal-service-v2-7ccddd94d4-kr7bj"
+"minimal-service-7f97bbc567-f7sjp"
+"minimal-service-v2-7ccddd94d4-kr7bj"
+"minimal-service-7f97bbc567-f7sjp"
+```
+
+We notice 50%/50% traffic split between pods and stats confirm this:
+
+```bash
+linkerd stat deploy -l app=minimal-service
+NAME                 MESHED   SUCCESS      RPS   LATENCY_P50   LATENCY_P95   LATENCY_P99   TCP_CONN
+minimal-service         1/1   100.00%   0.9rps           1ms           1ms           1ms          3
+minimal-service-v2      1/1   100.00%   0.9rps           1ms           1ms           1ms          3
+```
+
 
