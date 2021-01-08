@@ -1,0 +1,11 @@
+apiVersion: split.smi-spec.io/v1alpha1
+kind: TrafficSplit
+metadata:
+  name: splithalf
+spec:
+  service: minimal-service
+  backends:
+  - service: minimal-service
+    weight: 50
+  - service: minimal-service-v2
+    weight: 50
