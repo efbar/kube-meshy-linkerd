@@ -1,0 +1,13 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: service
+# spec:
+#   template:
+#     spec:
+#       containers:
+#         - name: minimal-service
+#           image: localhost:5000/minimal-service:v1.0.0
+- op: replace
+  path: /spec/template/spec/containers/0/name
+  value: minimal-service

@@ -4,9 +4,10 @@ kind: Kustomization
 bases:
   - ../../base
 namePrefix: minimal-
+nameSuffix: -v2
 commonLabels:
   app: minimal-service
-  version: v1
+  version: v2
 replicas:
 - name: service
   count: 1
@@ -14,7 +15,12 @@ patchesStrategicMerge:
 - custom-env.yaml
 patchesJson6902:
 - target:
+    version: v1
+    kind: Deployment
+    name: service
+  path: container-name.yaml
+- target:
     version: v1beta1
     kind: Ingress
-    name: service
+    name: service.*
   path: ingress-patch.yaml
