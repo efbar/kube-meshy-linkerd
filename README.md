@@ -1,10 +1,21 @@
 KUBE MESHY - Linkerd version
 =========
 
-## What for
-
 This project wants to show some basic functionalities of service mesh in Kubernetes.
 In this case we will use **Linkerd**.
+
+- [KUBE MESHY - Linkerd version](#kube-meshy---linkerd-version)
+  - [Components](#components)
+  - [Installation](#installation)
+    - [Play with mesh](#play-with-mesh)
+      - [Setup the mesh](#setup-the-mesh)
+        - [Ingress Controller](#ingress-controller)
+        - [Workload](#workload)
+      - [Use mesh feature: SERVICE PROFILE and RETRIES](#use-mesh-feature-service-profile-and-retries)
+        - [Service-to-Service use case](#service-to-service-use-case)
+        - [Ingress-to-Service use case](#ingress-to-service-use-case)
+      - [Use mesh feature: TRAFFIC SPLIT](#use-mesh-feature-traffic-split)
+
 
 ## Components
 
